@@ -28,6 +28,9 @@ def printsFontInfo(filename):
     print(f"filename: {filename}")
 
     for entry in fontName.names:
+        if entry.langID == 0:
+            continue
+
         encoding = (
             "utf_16_be"
             if entry.platformID == 3 and entry.platEncID in [1, 10]
