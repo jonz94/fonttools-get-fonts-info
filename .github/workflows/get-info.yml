@@ -26,10 +26,15 @@ jobs:
         run: |
           pip install fonttools
           python ${GITHUB_WORKSPACE}/main.py > sarasa-gothic-output.txt
+          python ${GITHUB_WORKSPACE}/main.py --dict > sarasa-gothic-dict-output.txt
       - uses: actions/upload-artifact@v2
         with:
           name: sarasa-gothic-output.txt
           path: sarasa-gothic-output.txt
+      - uses: actions/upload-artifact@v2
+        with:
+          name: sarasa-gothic-dict-output.txt
+          path: sarasa-gothic-dict-output.txt
 
   get-sarasa-nerd-fonts-info:
     runs-on: ubuntu-latest
@@ -65,7 +70,12 @@ jobs:
         run: |
           pip install fonttools
           python ${GITHUB_WORKSPACE}/main.py > sarasa-nerd-fonts-output.txt
+          python ${GITHUB_WORKSPACE}/main.py --dict > sarasa-nerd-fonts-dict-output.txt
       - uses: actions/upload-artifact@v2
         with:
           name: sarasa-nerd-fonts-output.txt
           path: sarasa-nerd-fonts-output.txt
+      - uses: actions/upload-artifact@v2
+        with:
+          name: sarasa-nerd-fonts-dict-output.txt
+          path: sarasa-nerd-fonts-dict-output.txt

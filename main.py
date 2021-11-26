@@ -1,6 +1,8 @@
 #! /usr/bin/python
 
 import os
+import sys
+from traceback import print_list, print_stack, print_tb
 
 from fontTools.ttLib import TTFont
 
@@ -18,6 +20,29 @@ def getName(nameID):
         17: "Preferred Styles",
         18: "Compatible Full",
     }.get(nameID, "unknown")
+
+
+def printFontDictory(filename):
+    font = TTFont(filename, recalcBBoxes=False)
+    fontName = font["name"]
+
+    for entry in fontName.names:
+        if entry.langID == 0:
+            continue
+
+        encoding = (
+            "utf_16_be"
+            if entry.platformID == 3 and entry.platEncID in [1, 10]
+            else "ascii"
+        )
+
+        if entry.nameID in [1, 3, 4, 6, 16, 18]:
+            key = f"{filename},{entry.nameID},{entry.platformID},{entry.platEncID},{entry.langID}"
+            value = f"{entry.string.decode(encoding)}"
+
+            print(f'"{key}": "{value}"')
+
+    font.close()
 
 
 def printsFontInfo(filename):
@@ -59,7 +84,10 @@ def main():
     for file in os.listdir(os.fsencode(workspace)):
         filename = os.fsdecode(file)
         if filename.endswith(".ttf"):
-            printsFontInfo(filename)
+            if len(sys.argv) == 1:
+                printsFontInfo(filename)
+            else:
+                printFontDictory(filename)
 
 
 if __name__ == "__main__":
