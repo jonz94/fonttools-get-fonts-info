@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: download latest version of Sarasa Gothic from GitHub release page
+      - name: download latest version of Sarasa Gothic Nerd Fonts from GitHub release page
         run: |
           # find the latest tag
           LATEST_TAG=$(curl --silent https://api.github.com/repos/jonz94/Sarasa-Gothic-Nerd-Fonts/releases/latest | jq -r .tag_name)
@@ -50,7 +50,14 @@ jobs:
             done
           done
       - run: ls -l
-      - run: unzip *.zip
+      - run: |
+          styles=("fixed" "fixed-slab" "mono" "mono-slab" "term" "term-slab" "gothic" "ui")
+          orthographies=("cl" "hc" "j" "k" "sc" "tc")
+          for style in ${styles[@]}; do
+            for orthography in ${orthographies[@]}; do
+              unzip "sarasa-${style}-${orthography}-nerd-font.zip"
+            done
+          done
       - run: ls -l
       - uses: actions/setup-python@v2
         with:
