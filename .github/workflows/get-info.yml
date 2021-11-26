@@ -6,31 +6,30 @@ on:
   workflow_dispatch:
 
 jobs:
-  # get-sarasa-gothic-info:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: download latest version of Sarasa Gothic from GitHub release page
-  #       run: |
-  #         # find the latest tag
-  #         LATEST_TAG=$(curl --silent https://api.github.com/repos/jonz94/Sarasa-Gothic-Nerd-Fonts/releases/latest | jq -r .tag_name)
-  #         echo downloading Sarasa Mono TC Nerd Fonts ${LATEST_TAG}
-  #         curl -L https://github.com/jonz94/Sarasa-Gothic-Nerd-Fonts/releases/download/${LATEST_TAG}/sarasa-mono-tc-nerd-font.zip -O
-  #     - run: ls -l
-  #     - run: unzip *.zip
-  #     - run: ls -l
-  #     - uses: actions/setup-python@v2
-  #       with:
-  #         python-version: '3.x'
-  #     - name: rename
-  #       run: |
-  #         # generate woff fonts using fonttools
-  #         pip install fonttools
-  #         python ${GITHUB_WORKSPACE}/main.py > output.txt
-  #     - uses: actions/upload-artifact@v2
-  #       with:
-  #         name: output
-  #         path: output.txt
+  get-sarasa-gothic-info:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: download latest version of Sarasa Gothic from GitHub release page
+        run: |
+          # find the latest tag
+          LATEST_TAG=$(curl --silent https://api.github.com/repos/be5invis/Sarasa-Gothic/releases/latest | jq -r .tag_name)
+          echo downloading Sarasa Gothic ${LATEST_TAG}
+          curl -L https://github.com/be5invis/Sarasa-Gothic/releases/download/${LATEST_TAG}/sarasa-gothic-ttf-${LATEST_TAG:1}.7z -o sarasa-gothic-ttf.7z
+      - run: ls -l
+      - run: 7z x *.7z
+      - run: ls -l
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: print info
+        run: |
+          pip install fonttools
+          python ${GITHUB_WORKSPACE}/main.py > sarasa-gothic-output.txt
+      - uses: actions/upload-artifact@v2
+        with:
+          name: sarasa-gothic-output.txt
+          path: sarasa-gothic-output.txt
 
   get-sarasa-nerd-fonts-info:
     runs-on: ubuntu-latest
@@ -62,9 +61,8 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: '3.x'
-      - name: rename
+      - name: print info
         run: |
-          # generate woff fonts using fonttools
           pip install fonttools
           python ${GITHUB_WORKSPACE}/main.py > sarasa-nerd-fonts-output.txt
       - uses: actions/upload-artifact@v2

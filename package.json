@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "^2.5.0",
+    "prettier-plugin-packagejson": "^2.2.15"
+  }
+}
