@@ -1,7 +1,6 @@
 #! /usr/bin/python
 
 import os
-from traceback import print_list, print_stack, print_tb
 
 from fontTools.ttLib import TTFont
 
@@ -9,6 +8,8 @@ from fontTools.ttLib import TTFont
 def fix(filename):
     font = TTFont(filename, recalcBBoxes=False)
     fontName = font["name"]
+
+    originFontUniqueID = fontName.getName(3, 3, 1, 1033).toUnicode()
 
     for entry in fontName.names:
         nameID = entry.nameID
@@ -25,24 +26,23 @@ def fix(filename):
                 .replace(" SC", " SC Nerd Font")
                 .replace(" HC", " HC Nerd Font")
             )
-
             fontName.setName(string, nameID, platformID, platEncID, langID)
-        if nameID == 1:
+
+        elif nameID in [1, 16]:
+            style = fontName.getName(2, 3, 1, 1033).toUnicode()
+            string = originFontUniqueID.replace(f" {style}", " Nerd Font")
+            fontName.setName(string, nameID, platformID, platEncID, langID)
+
+        elif nameID == 3:
+            style = fontName.getName(2, 3, 1, 1033).toUnicode()
+            string = originFontUniqueID.replace(f" {style}", f" Nerd Font {style}")
+            fontName.setName(string, nameID, platformID, platEncID, langID)
+
+        elif nameID == 6:
+            string = f"{fontName.getName(4,3,1,1033)} {fontName.getName(2,3,1,1033)}"
+            string = string.replace(" ", "-")
+            fontName.setName(string, nameID, platformID, platEncID, langID)
             pass
-
-        # if entry.nameID in [1, 3, 4, 6, 16, 18]:
-        #     key = f"{filename},{nameID},{platformID},{platEncID},{langID}"
-        #     value = f"{entry.toUnicode()}"
-
-        #     print(f'"{key}": "{value}"')
-
-        # if nameID == 1 and langID == 1033:
-        #     print(fontName.getName(18, 3, 1, 1033).toUnicode().rsplit(" ", 3)[0])
-
-        #     key = f"{filename},{nameID},{platformID},{platEncID},{langID}"
-        #     value = f"{entry.toUnicode()}"
-
-        #     print(f'"{key}": "{value}"')
 
     font.save(filename)
     font.close()
