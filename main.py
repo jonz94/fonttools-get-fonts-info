@@ -27,20 +27,18 @@ def printFontDictory(filename):
     fontName = font["name"]
 
     for entry in fontName.names:
-        if entry.langID == 0:
+        nameID = entry.nameID
+        platformID = entry.platformID
+        platEncID = entry.platEncID
+        langID = entry.langID
+
+        if nameID == 0:
             continue
 
-        encoding = (
-            "utf_16_be"
-            if entry.platformID == 3 and entry.platEncID in [1, 10]
-            else "ascii"
-        )
+        key = f"{filename},{nameID},{platformID},{platEncID},{langID}"
+        value = f"{entry.toUnicode()}"
 
-        if entry.nameID in [1, 3, 4, 6, 16, 18]:
-            key = f"{filename},{entry.nameID},{entry.platformID},{entry.platEncID},{entry.langID}"
-            value = f"{entry.string.decode(encoding)}"
-
-            print(f'"{key}": "{value}"')
+        print(f'"{key}": "{value}"')
 
     font.close()
 
@@ -83,7 +81,7 @@ def main():
 
     for file in os.listdir(os.fsencode(workspace)):
         filename = os.fsdecode(file)
-        if filename.endswith(".ttf"):
+        if filename.endswith(".ttf") or filename.endswith(".otf"):
             if len(sys.argv) == 1:
                 printsFontInfo(filename)
             else:
