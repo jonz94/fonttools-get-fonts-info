@@ -1,7 +1,7 @@
 #!/bin/bash
 
 for file in $(ls origin); do
-  rm $file
+  rm -f $file
   cp origin/$file ./
 done
 
