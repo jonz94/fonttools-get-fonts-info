@@ -7,4 +7,4 @@ echo ---------------------------------------------------------------------------
 python fix.py
 python main.py --dict
 
-mv Lato-Regular.ttf Crazy-Characters-Regular.ttf
+mv Lato-Regular.ttf CrazyNoWhitespaceCharactersRegular.ttf

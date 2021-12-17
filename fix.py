@@ -18,7 +18,7 @@ def fix(filename):
 
         if nameID in [1, 3, 4, 6]:
             fontName.setName(
-                f"Crazy {characters} Regular",
+                f"Crazy{characters}Regular",
                 nameID,
                 platformID,
                 platEncID,
