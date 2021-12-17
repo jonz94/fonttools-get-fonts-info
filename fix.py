@@ -8,7 +8,7 @@ from fontTools.ttLib import TTFont
 def fix(filename):
     font = TTFont(filename, recalcBBoxes=False)
     fontName = font["name"]
-    characters = " !\"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"
+    characters = "!\"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"
 
     for entry in fontName.names:
         nameID = entry.nameID
@@ -18,7 +18,7 @@ def fix(filename):
 
         if nameID in [1, 3, 4, 6]:
             fontName.setName(
-                f"Lato{characters}Regular",
+                f"Crazy {characters} Regular",
                 nameID,
                 platformID,
                 platEncID,
