@@ -8,6 +8,7 @@ from fontTools.ttLib import TTFont
 def fix(filename):
     font = TTFont(filename, recalcBBoxes=False)
     fontName = font["name"]
+    characters = " !\"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"
 
     for entry in fontName.names:
         nameID = entry.nameID
@@ -15,12 +16,9 @@ def fix(filename):
         platEncID = entry.platEncID
         langID = entry.langID
 
-        if nameID in [1, 4, 6]:
-            fontName.setName("Lato:Regular", nameID, platformID, platEncID, langID)
-
-        elif nameID == 3:
+        if nameID in [1, 3, 4, 6]:
             fontName.setName(
-                "tyPolandLukaszDziedzic: Lato:Regular: 2011",
+                f"Lato{characters}Regular",
                 nameID,
                 platformID,
                 platEncID,
