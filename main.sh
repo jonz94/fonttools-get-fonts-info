@@ -1,10 +1,14 @@
 #!/bin/bash
 
+for file in $(ls ./*.ttf); do
+  rm -f $file
+done
+
 cp origin/Lato-Regular.ttf ./
 
 python main.py --dict
 echo --------------------------------------------------------------------------------
-python fix.py
+python rename.py
 python main.py --dict
 
-mv Lato-Regular.ttf CrazyNoWhitespaceCharactersRegular.ttf
+rm ./Lato-Regular.ttf
