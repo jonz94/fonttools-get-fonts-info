@@ -1,7 +1,7 @@
 #! /usr/bin/python
 
 import os
-
+from pathlib import Path
 from fontTools.ttLib import TTFont
 
 
@@ -49,9 +49,7 @@ def fix(filename):
 
 
 def main():
-    workspace = os.environ.get("GITHUB_WORKSPACE") or os.path.abspath(__file__).replace(
-        "/fix.py", ""
-    )
+    workspace = os.environ.get("GITHUB_WORKSPACE") or Path(__file__).parent
 
     for file in os.listdir(os.fsencode(workspace)):
         filename = os.fsdecode(file)
